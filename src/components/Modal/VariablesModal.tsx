@@ -1,11 +1,27 @@
 import classNames from 'classnames'
+import AddNewVariableItem from './AddNewVariableItem'
+import VariableItem from './VariableItem'
+
+export interface Variable {
+  name: string
+  content: string
+}
 
 interface Props {
   show: boolean
   closeModal: () => void
+  variables: Variable[]
+  addVariable: (v: Variable) => void
+  removeVariable: (v: Variable) => void
 }
 
-const VariablesModal: React.FC<Props> = ({ show, closeModal }) => {
+const VariablesModal: React.FC<Props> = ({
+  addVariable,
+  variables,
+  removeVariable,
+  show,
+  closeModal,
+}) => {
   return (
     <>
       <div className={classNames('modal', show && 'modal-open')}>
@@ -18,43 +34,15 @@ const VariablesModal: React.FC<Props> = ({ show, closeModal }) => {
           </button>
           <h3 className="text-lg font-bold mb-4">Variables</h3>
           <div className="divider"></div>
-
-          <div className="card bg-base-100 shadow-xl mb-4">
-            <div className="card-body">
-              <div className="form-control w-full mb-2">
-                <label className="label">
-                  <span className="label-text">Name (required)</span>
-                </label>
-                <div className="input-group">
-                  <input
-                    type="password"
-                    placeholder="Variable name"
-                    // onChange={handleApiKeyInputChange}
-                    // value={apiKeyInput}
-                    // disabled={apiKey !== null}
-                    className={classNames('input', 'input-bordered', 'w-full')}
-                  />
-                </div>
-              </div>
-
-              <div className="form-control w-full mb-2">
-                <label className="label">
-                  <span className="label-text">Content (required)</span>
-                </label>
-                <div className="input-group">
-                  <textarea
-                    rows={2}
-                    className="textarea textarea-bordered w-full resize-none"
-                    placeholder="..."
-                  ></textarea>
-                </div>
-              </div>
-              <button className="btn btn-success">Save</button>
-            </div>
-          </div>
-          <button className="btn btn-success btn-outline w-full">
-            Add More
-          </button>
+          <AddNewVariableItem addVariable={addVariable} />
+          <div className="divider" />
+          {variables.map((v) => (
+            <VariableItem
+              key={v.name}
+              variable={v}
+              removeVariable={removeVariable}
+            />
+          ))}
         </div>
       </div>
     </>

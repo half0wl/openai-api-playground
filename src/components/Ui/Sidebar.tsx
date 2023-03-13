@@ -27,10 +27,8 @@ const Sidebar: React.FC<Props> = ({
             <button
               className={itemClassNames}
               onClick={openVariablesModal}
-              disabled
             >
-              Variables&nbsp;
-              <div className="badge badge-primary">Coming Soon</div>
+              Variables
             </button>
           </li>
         </ul>

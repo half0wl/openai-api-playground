@@ -17,15 +17,18 @@ import { match } from 'ts-pattern'
 
 import { AxiosResponse } from 'axios'
 import { useState } from 'react'
+import { Variable } from '../Modal/VariablesModal'
 
 interface Props {
   apiKey: string | null
+  variables: Variable[]
   setResponse: (response: AxiosResponse | null) => void
   setQueryType: (queryType: QueryType) => void
 }
 
 const PromptRequest: React.FC<Props> = ({
   apiKey,
+  variables,
   setQueryType,
   setResponse,
 }) => {
@@ -52,13 +55,22 @@ const PromptRequest: React.FC<Props> = ({
       return
     }
 
+    // Detect and substitue variables in request
+    let substitutedPrompt = prompt
+    variables.forEach((v) => {
+      const regex = new RegExp(`{{ ${v.name} }}`, 'g')
+      if (prompt.match(regex)) {
+        substitutedPrompt = substitutedPrompt.replaceAll(regex, v.content)
+      }
+    })
+
     setLoading(true)
     const res = await match(activeTab)
       .with('ChatCompletion', async () => {
-        return await chatCompletion(apiKey, model, prompt)
+        return await chatCompletion(apiKey, model, substitutedPrompt)
       })
       .with('Completion', async () => {
-        return await completion(apiKey, model, prompt)
+        return await completion(apiKey, model, substitutedPrompt)
       })
       .exhaustive()
 

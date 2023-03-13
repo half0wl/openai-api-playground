@@ -1,6 +1,7 @@
 import { PromptRow } from '@/components/Prompt'
 import { Navbar, Sidebar, Icon } from '@/components/Ui'
 import { SettingsModal, VariablesModal } from '@/components/Modal'
+import { Variable } from '@/components/Modal/VariablesModal'
 import { range } from 'lodash'
 import { Inter } from 'next/font/google'
 import Head from 'next/head'
@@ -16,6 +17,21 @@ const Home: React.FC = () => {
   // adding more stuff, we should use useReducer or a state management library.
 
   const [apiKey, setApiKey] = useState<string | null>(null)
+
+  const [variables, setVariables] = useState<Variable[]>([])
+  const addVariable = (v0: Variable) => {
+    if (v0.name === '' || v0.content === '') {
+      throw new Error(`Variable name/content must not be empty`)
+    }
+    const existing = variables.find((v1) => v0.name === v1.name)
+    if (existing) {
+      throw new RangeError(`Variable already exists: ${v0.name}`)
+    }
+    setVariables((prev) => [...prev, v0])
+  }
+  const removeVariable = (v0: Variable) => {
+    setVariables(variables.filter((v1) => v0.name !== v1.name))
+  }
 
   const [promptRows, setPromptRows] = useState<number>(3)
   const incrementPromptRows = () => setPromptRows((p) => p + 1)
@@ -43,7 +59,10 @@ const Home: React.FC = () => {
         closeModal={closeSettingsModal}
       />
       <VariablesModal
+        variables={variables}
         show={showVariablesModal}
+        addVariable={addVariable}
+        removeVariable={removeVariable}
         closeModal={closeVariablesModal}
       />
       <div
@@ -65,7 +84,7 @@ const Home: React.FC = () => {
             </div>
             <div className="col-span-10 w-full">
               {range(promptRows).map((pr) => (
-                <PromptRow apiKey={apiKey} key={pr} />
+                <PromptRow key={pr} apiKey={apiKey} variables={variables} />
               ))}
               <button
                 className="btn btn-success w-full"
