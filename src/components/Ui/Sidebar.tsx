@@ -39,14 +39,6 @@ const Sidebar: React.FC<Props> = ({
             GitHub
           </Link>
         </li>
-        <li>
-          <Link href="/">
-            <span className="text-slate-600 text-sm flex items-center">
-              <Icon name="arrow-up" h={18} w={18} />
-              &nbsp; Scroll to top
-            </span>
-          </Link>
-        </li>
       </ul>
     </aside>
   )
