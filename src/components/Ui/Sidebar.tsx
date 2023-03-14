@@ -35,7 +35,7 @@ const Sidebar: React.FC<Props> = ({
       </div>
       <ul className="menu w-full">
         <li>
-          <Link className="w-full" href="">
+          <Link className="w-full" href="https://github.com/half0wl/openai-api-playground">
             GitHub
           </Link>
         </li>
