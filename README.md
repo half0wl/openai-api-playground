@@ -11,6 +11,7 @@
 * Add and try out multiple prompts in a single screen
 * Support for setting and injecting variables into prompts
 * Everything is local - your API key is not stored or sent to any servers
+(except OpenAI's for fulfilling requests)
 
 ## Usage
 
