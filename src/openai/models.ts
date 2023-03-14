@@ -1,5 +1,11 @@
 /**
- * https://platform.openai.com/docs/models/model-endpoint-compatability
+ * Models are hardcoded instead of being fetched from the `listModels`
+ * endpoint. `listModels` contain a lot of models, including beta models
+ * that may not work. Certain models are only compatible with certain
+ * endpoints (e.g. gpt-3.5-turbo doesn't work with completions endpoint).
+ * To ensure maximum compatability, I'm opting to maintain this manually.
+ *
+ * @see https://platform.openai.com/docs/models/model-endpoint-compatability
  */
 
 export type QueryType = 'ChatCompletion' | 'Completion'
